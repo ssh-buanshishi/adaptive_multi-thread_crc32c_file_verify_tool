@@ -13,6 +13,28 @@ The process and story of developing this program: https://www.52pojie.cn/thread-
 ====================================================================
 
 
+软件（和源码）链接：
+
+①百度云：（拥有完整资料，包括软件自身、说明文本、操作演示视频和背景音乐欣赏，以及视频中出现的音乐文件分享）https://pan.baidu.com/s/1iBlKi5hV_kdkkzCgVjblYQ?pwd=0000
+
+②蓝奏云：（因文件大小100M限制，只有软件自身、源码和一个说明用的txt文本文件，以及导航用的、存有百度云链接的文本文件）https://wwm.lanzouq.com/b0ny5lvuf
+
+③没有百度云VIP账号，想要看操作演示的（或者只是想随便听听音乐打发时间的），请访问下面这个链接，到B站收看：https://www.bilibili.com/video/BV18rupeWEt7
+
+Software (and source code) links:
+
+① Baidu cloud disk: (with complete information, including the software itself, description of the text, operation demo video and background music to enjoy, as well as the video appeared in the music file sharing) https://pan.baidu.com/s/1iBlKi5hV_kdkkzCgVjblYQ?pwd=0000
+
+② Lanzou cloud: (due to the file size of 100M limit, only the software itself, source code and a description of the txt text file, as well as navigation with the text file stored in the Baidu cloud link) https://wwm.lanzouq.com/b0ny5lvuf
+
+③ no Baidu cloud VIP account, want to see the operation of the demonstration (or just want to casually listen to the music to pass the time), please visit the following link to the BiliBili video site to watch: https://www.bilibili.com/video/BV18rupeWEt7
+
+【Translated with DeepL.com (free version)】
+
+
+====================================================================
+
+
 工具基于python的wmi模块获取文件路径所在磁盘的数字编号，然后基于磁盘SMART工具“smartctl.exe"根据前面获取到的磁盘数字编号，获取对应磁盘的旋转速度、接口类型、是否为SSD的SMART属性，以此判断磁盘硬件类型（固态／机械），并合理分配同时读取的文件数（线程数）。
 
 The tool is based on python's wmi module to get the number of the disk where the file path is located, and then based on the disk SMART tool "smartctl.exe" according to the number of the disk obtained earlier, to get the corresponding disk rotational speed, interface type, whether it is an SSD SMART attributes, in order to determine the type of disk hardware (solid state / mechanical), and reasonably allocate the number of files to be read simultaneously (number of threads).
