@@ -163,7 +163,7 @@ def calc(task_file: str) -> tuple:
         return (task_file , str(result).zfill(10) , value_reliable)
 
 
-def allocate_thread_num_by_disk_hardware_type() -> int:
+def allocate_thread_num_by_disk_hardware_type() -> tuple:
     # 获取硬盘分区和磁盘号的关联
     c = wmi.WMI()
     section_to_physical_disk_dict = {}
