@@ -1,8 +1,10 @@
 # adaptive_multi-thread_crc32c_file_verify_tool
 这是一款由我用python编写，通过在分享前获取文件CRC32C校验值并记录在文件中，和在接受文件之后根据记录文件比对文件CRC32C的方式，方便文件分享者和接收者确认数据完整性、正确性的工具。
+
 开发此程序的过程和故事：https://www.52pojie.cn/thread-1925899-1-1.html
 
 This is a tool written by me in python, which facilitates the file sharer and receiver to confirm the data integrity and correctness by obtaining the file CRC32C checksum value before sharing and recording it in the file, and comparing the file CRC32C according to the recorded file after accepting the file.
+
 The process and story of developing this program: https://www.52pojie.cn/thread-1925899-1-1.html
 【Translated with DeepL.com (free version)】
 
