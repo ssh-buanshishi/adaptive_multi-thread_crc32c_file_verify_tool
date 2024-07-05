@@ -3,14 +3,14 @@
 This is a tool written by me in python, which facilitates the file sharer and receiver to confirm the data integrity and correctness by obtaining the file CRC32C checksum value before sharing and recording it in the file, and comparing the file CRC32C according to the recorded file after accepting the file.
 【Translated with DeepL.com (free version)】
 
-============================================================================================================================================
+====================================================================
 
 工具基于python的wmi模块获取文件路径所在磁盘的数字编号，然后基于磁盘SMART工具“smartctl.exe"根据前面获取到的磁盘数字编号，获取对应磁盘的旋转速度、接口类型、是否为SSD的SMART属性，以此判断磁盘硬件类型（固态／机械），并合理分配同时读取的文件数（线程数）。
 
 The tool is based on python's wmi module to get the number of the disk where the file path is located, and then based on the disk SMART tool "smartctl.exe" according to the number of the disk obtained earlier, to get the corresponding disk rotational speed, interface type, whether it is an SSD SMART attributes, in order to determine the type of disk hardware (solid state / mechanical), and reasonably allocate the number of files to be read simultaneously (number of threads).
 【Translated with DeepL.com (free version)】
 
-============================================================================================================================================
+====================================================================
 
 ①在机械硬盘（HDD）上以单线程读取文件（逐个读取文件），降低机械盘寻道压力的同时。读取、计算校验的速度也能赶上机械盘自身的连续读取大文件的速度，和知名解压软件7-zip校验CRC的速度不相上下；
 ②在nvme和SSD上以4线程读取文件（同时读取4个文件）。在获取一个文件夹下的多个文件（递归）CRC值的场景下，相较于7-zip和已有的大部分校验软件，速度上应该会有显著提升，可以加快校验速度，节省时间。
