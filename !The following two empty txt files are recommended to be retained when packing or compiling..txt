@@ -1,0 +1,5 @@
+The following two empty txt files are recommended to be retained when packing or compiling
+下面两个空txt文件打包时建议最好保留：
+
+①_文件CRC32校验值_.txt
+②校验结果.txt
