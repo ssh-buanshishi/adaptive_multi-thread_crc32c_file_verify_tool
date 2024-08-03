@@ -157,6 +157,7 @@ def calc(task_file: str) -> tuple:
             result = crc32c.crc32c(buf,result)
             # 更新已读取计数
             progress_dict[task_file][1] += len(buf)
+        
         file_handle.close()
     
     except:
