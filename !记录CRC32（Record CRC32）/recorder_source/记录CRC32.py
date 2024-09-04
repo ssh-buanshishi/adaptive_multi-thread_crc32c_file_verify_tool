@@ -153,10 +153,17 @@ def calc(task_file: str) -> tuple:
         #  
         #   突然想到固态盘里，闪存单元的块大小是不是也是这么大？不过感觉应该要比1 MiB小吧。
         #
-        while buf := file_handle.read(1048576): # 1024 × 1024 = 1048576（1 MiB）
-            result = crc32c.crc32c(buf,result)
+        # 【2024年9月4日补充】：crc32c模块添加了在计算时释放GIL锁的特性，缓冲区buf越大越有利，所以改为了“2097152（2 MiB）”
+        #     目前的PCIE4.0固态和将来的固态速度会越来越快，
+        #     目前在单线程条件下，据我所知也只有带SSE4.2指令硬件加速的crc32c校验算法能勉强跟得上硬盘的读取速度，
+        #     此crc32c库单线程条件下的校验速率约为 6 Gib/s （使用随机值生成的 1 GiB 内存缓冲作的测试）
+        #     所以为了“战未来”，GIL锁释放的特效很有必要加入
+        crc32c_handle = crc32c.CRC32CHash(gil_release_mode=1)
+        while buf := file_handle.read(2097152): # 2 × 1024 × 1024 = 2097152（2 MiB）
+            crc32c_handle.update(buf)
             # 更新已读取计数
             progress_dict[task_file][1] += len(buf)
+        result = crc32c_handle.checksum
         
         file_handle.close()
     
@@ -274,17 +281,17 @@ os.system("mode con cols=120 lines=30")
 os.system("title 获取当前目录下所有文件的路径中")
 # 获取文件
 file_set = []
-for folder_path,_,_ in os.walk("."):
-    if exe_path not in folder_path:
-        os.chdir(folder_path)
-        file_set.extend(
-            [f"{folder_path}\\{fn}" for fn in os.listdir() if os.path.isfile(fn)]
-        )
-        os.chdir(cwd)
+for root , _ , filesets in os.walk("."):
+    if exe_path not in root:
+        for file in filesets:
+            file_set.append(f"{root}\\{file}")
 
 # 排除自身产生的记录文件
 try:
     file_set.remove(rec_output_file)
+except:
+    pass
+try:
     file_set.remove(verify_output_file)
 except:
     pass
@@ -341,7 +348,7 @@ result_list.sort(key=lambda x:x[0])
 try:
     tmp = "\n".join(  [ ">>>>>".join(i[0:2]) for i in result_list if i[2] ]  )
     
-    f = open(file = rec_output_file , mode="w",encoding="utf-8-sig")
+    f = open(file = rec_output_file , mode="wt",encoding="utf-8-sig")
     f.write(tmp)
     f.close()
 except:
