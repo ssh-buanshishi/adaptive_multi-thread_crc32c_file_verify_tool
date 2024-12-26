@@ -1,0 +1,74 @@
+﻿如需打包编译，
+python需要3.8及以上版本，我这边为了支持win7选择了python_3.8.6（32位的）。
+
+可以选择双击“【Pyinstaller】打包命令.py”自动打包。
+pyinstaller需要6.1及以上版本（为了支持【--contents-directory=】命令）。
+pyinstaller的配置比较省心一些，打包出的依赖文件也是单独一个文件夹收好的，外面的exe就是本体。
+
+不过为了性能，还是建议折腾下Nuitka，用“【Nuitka】打包命令.py”自动打包。
+Nuitka就是需要按照提示下载它指定的gcc编译器和Depends，
+即便系统环境变量里的gcc是Nuitka下载的，只要不放在指定路径下，Nuitka都会不认。
+
+gcc编译器的下载用【Nuitka --version】命令即可触发，
+而Depends的下载目前没找出除了第一次打包之外的触发条件。
+建议下载前开启Github加速器或者科学上网。下载过一次之后，Nuitka就不会再来烦你了，
+除非你日常同时用2个Windows账号用Nuitka，这种情况偷懒的话可以选择复制或者硬链接这些需要的文件。
+
+由于不同版本Nuitka需要的gcc和Depends的版本不同，除非能确保Nuitka版本一致，
+提前准备这些需要下载文件基本没用。
+
+我这边用的Nuitka版本2.4.2和2.5.8都能成功打包出来，版本应该没什么特殊要求。
+打包过程估计会报2个Warning，可以忽略，大意是sys、time这两个模块没有follow import，问题不大。
+
+由于Nuitka的依赖文件和exe在同一目录下，所以为了方便查找和运行，额外放了两个bat启动器。
+
+
+
+“icon-console.ico”取自版本5.X的pyinstaller，新版的pyinstaller打包的exe在win7下启动后，
+右上角的图标显示不出来，老版本的“icon-console.ico”就没问题。
+还可以留给Nuitka打包用，因为Nuitka不像pyinstaller会自动添加图标，需要手动给命令参数。
+
+
+
+
+除了：2个打包用的py、pip一键安装需要的库.bat、此说明文本文件、ico图标文件，
+请不要修改此文件夹下，上述部分以外的文件或文件夹的名称，否则自动打包或者直接运行脚本会出问题。
+
+此文件夹下的【记录CRC32C.py】和【校验CRC32C.py】可直接以脚本状态运行，不过需要管理员权限。
+因此在脚本状态下，如果是登录的windows用户是系统自带的Administrator，支持拖放，
+反之只能支持右键“用管理员权限运行”，
+打包编译后则不受限制（pyinstaller用的“--uac-admin”，Nuitka用的“--windows-uac-admin”）。
+
+
+还有要注意的是，crc32c这个库建议认准2.7.1版本，
+因为python_3.8已经走完官方维护的寿命周期了，
+考虑到此库的作者后续可能会放弃python_3.8的支持（也就是win7的支持），
+建议认准此版本号下载安装，以获得对win7的支持。
+
+
+
+
+
+定制库【my_custom_pySMART】从pySMART库修改而来。
+版本需要为1.3.0，更高的版本我这边的python_3.8.6会报logger里没有trace后缀的错误。
+
+pySMART库：
+https://pypi.org/project/pySMART/
+https://github.com/truenas/py-SMART
+
+
+
+修改点在<utils.py>中：
+
+30  行: - from shutil import which
+        + #from shutil import which
+
+120 行: - SMARTCTL_PATH = which('smartctl')
+        + #SMARTCTL_PATH = which('smartctl')
+        + SMARTCTL_PATH = "smartctl"
+
+# 如果不改的话，即使在代码里加了“os.environ['PATH'] += f"{cwd}\\SmartMonTools\\;"”，
+# 也会报找不到smartctl的错误，不知道为什么，
+# 照理说“shutil.which('smartctl')”应该能识别到，
+# 我在idle里这么做过，也成功打印出了smartctl的绝对路径了，
+# 只不过模块依旧死活认不出来smartctl，现在只能直接写死
