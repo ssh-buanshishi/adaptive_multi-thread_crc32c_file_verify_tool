@@ -1,6 +1,8 @@
 ﻿crc32c==2.7.1
 WMI==1.5.1
+psutil==7.0.0
 pywin32==308
 pywin32-ctypes==0.2.3
 pyinstaller>=6.1.0
+
 Nuitka>=2.4.2
